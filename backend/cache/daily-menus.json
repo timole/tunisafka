@@ -1,6 +1,6 @@
 {
   "date": "2025-09-19",
-  "timestamp": "2025-09-19T11:39:10.506Z",
+  "timestamp": "2025-09-19T11:43:52.646Z",
   "timezone": "Europe/Helsinki",
   "menuData": [
     {
@@ -101,7 +101,7 @@
           "friday"
         ]
       },
-      "lastUpdated": "2025-09-19T11:39:10.505Z",
+      "lastUpdated": "2025-09-19T11:43:52.645Z",
       "isSelected": false
     },
     {
@@ -246,7 +246,7 @@
           "friday"
         ]
       },
-      "lastUpdated": "2025-09-19T11:39:10.505Z",
+      "lastUpdated": "2025-09-19T11:43:52.646Z",
       "isSelected": false
     },
     {
@@ -333,7 +333,7 @@
           "friday"
         ]
       },
-      "lastUpdated": "2025-09-19T11:39:10.505Z",
+      "lastUpdated": "2025-09-19T11:43:52.646Z",
       "isSelected": false
     },
     {
@@ -446,12 +446,12 @@
           "friday"
         ]
       },
-      "lastUpdated": "2025-09-19T11:39:10.505Z",
+      "lastUpdated": "2025-09-19T11:43:52.646Z",
       "isSelected": false
     }
   ],
   "scrapingResult": {
-    "timestamp": "2025-09-19T11:39:10.506Z",
+    "timestamp": "2025-09-19T11:43:52.646Z",
     "success": true,
     "menusFound": 4,
     "source": "https://unisafka.fi/tty/",

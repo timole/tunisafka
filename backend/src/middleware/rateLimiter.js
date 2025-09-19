@@ -8,9 +8,21 @@ class SimpleRateLimiter {
     this.requests = new Map();
     this.windowMs = 60 * 1000; // 1 minute window
     this.maxRequests = 200; // 200 requests per minute per IP for testing
+    this.cleanupInterval = null;
     
-    // Cleanup old entries every 5 minutes
-    this.cleanupInterval = setInterval(() => this.cleanup(), 5 * 60 * 1000);
+    // Only start cleanup interval in non-test environments or when explicitly enabled
+    if (process.env.NODE_ENV !== 'test') {
+      this.startCleanup();
+    }
+  }
+
+  startCleanup() {
+    if (!this.cleanupInterval) {
+      // Cleanup old entries every 5 minutes
+      this.cleanupInterval = setInterval(() => this.cleanup(), 5 * 60 * 1000);
+      // In Node.js, unref() allows the process to exit even with this timer active
+      this.cleanupInterval.unref();
+    }
   }
 
   destroy() {
