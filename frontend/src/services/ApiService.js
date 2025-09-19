@@ -35,7 +35,7 @@ class ApiService {
 
     // Default to localhost in development
     if (process.env.NODE_ENV === 'development') {
-      return 'http://localhost:3000/api';
+      return 'http://localhost:3001/api';
     }
 
     // Production fallback
