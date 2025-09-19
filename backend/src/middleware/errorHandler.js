@@ -3,7 +3,7 @@
  * Centralized error handling for the Express application
  */
 
-const errorHandler = (error, req, res, next) => {
+const errorHandler = (error, req, res, _next) => {
   // Log the error
   console.error('Error occurred:', {
     message: error.message,
