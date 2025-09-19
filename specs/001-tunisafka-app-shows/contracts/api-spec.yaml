@@ -1,0 +1,393 @@
+openapi: 3.0.3
+info:
+  title: Tunisafka Menu API
+  description: API for scraping and serving university cafeteria menu data
+  version: 1.0.0
+  contact:
+    name: Tunisafka App
+    url: https://github.com/tunisafka
+
+servers:
+  - url: http://localhost:3001/api
+    description: Development server
+  - url: https://tunisafka.example.com/api
+    description: Production server
+
+paths:
+  /menus:
+    get:
+      summary: Get all available menus
+      description: Fetches current menu data by scraping the university website
+      operationId: getMenus
+      tags:
+        - Menus
+      responses:
+        '200':
+          description: Successfully retrieved menu data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenusResponse'
+              example:
+                menus:
+                  - id: "lunch-menu"
+                    title: "Lunch Menu"
+                    description: "Daily hot lunch offerings"
+                    items:
+                      - id: "chicken-curry"
+                        name: "Chicken Curry"
+                        description: "Spicy chicken curry with rice"
+                        price: "€8.90"
+                        dietary: ["gluten-free"]
+                        allergens: ["contains dairy"]
+                        availability: ""
+                    availability:
+                      startTime: "11:00"
+                      endTime: "14:00"
+                      days: ["monday", "tuesday", "wednesday", "thursday", "friday"]
+                    lastUpdated: "2025-09-18T10:30:00Z"
+                    isSelected: false
+                lastUpdated: "2025-09-18T10:30:00Z"
+                source: "https://unisafka.fi/tty/"
+                scrapingResult:
+                  timestamp: "2025-09-18T10:30:00Z"
+                  success: true
+                  menusFound: 3
+                  source: "https://unisafka.fi/tty/"
+                  error: null
+                  duration: 1250
+        '500':
+          description: Server error during scraping
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "Unable to fetch menu data"
+                code: "SCRAPING_ERROR"
+                retry: true
+                timestamp: "2025-09-18T10:30:00Z"
+        '503':
+          description: Service temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "Source website is currently unavailable"
+                code: "SOURCE_UNAVAILABLE"
+                retry: true
+                timestamp: "2025-09-18T10:30:00Z"
+
+  /menus/random:
+    get:
+      summary: Get a random menu selection
+      description: Selects and returns a random menu from available options
+      operationId: getRandomMenu
+      tags:
+        - Menus
+      responses:
+        '200':
+          description: Successfully selected random menu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RandomMenuResponse'
+              example:
+                selectedMenu:
+                  id: "vegetarian-menu"
+                  title: "Vegetarian Menu"
+                  description: "Plant-based options"
+                  items:
+                    - id: "veggie-burger"
+                      name: "Veggie Burger"
+                      description: "House-made veggie patty with fries"
+                      price: "€7.50"
+                      dietary: ["vegetarian"]
+                      allergens: ["contains gluten"]
+                      availability: ""
+                  availability:
+                    startTime: "11:00"
+                    endTime: "15:00"
+                    days: ["monday", "tuesday", "wednesday", "thursday", "friday"]
+                  lastUpdated: "2025-09-18T10:30:00Z"
+                  isSelected: true
+                totalMenusAvailable: 3
+                selectionTimestamp: "2025-09-18T10:35:00Z"
+        '404':
+          description: No menus available for selection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "No menus available for random selection"
+                code: "NO_MENUS_AVAILABLE"
+                retry: true
+                timestamp: "2025-09-18T10:30:00Z"
+        '500':
+          description: Server error during selection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Returns the health status of the scraping service
+      operationId: getHealth
+      tags:
+        - System
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "healthy"
+                timestamp: "2025-09-18T10:30:00Z"
+                lastSuccessfulScrape: "2025-09-18T10:25:00Z"
+                version: "1.0.0"
+
+components:
+  schemas:
+    Menu:
+      type: object
+      required:
+        - id
+        - title
+        - items
+        - availability
+        - lastUpdated
+        - isSelected
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the menu
+          example: "lunch-menu"
+        title:
+          type: string
+          description: Display name of the menu
+          example: "Lunch Menu"
+        description:
+          type: string
+          description: Brief description of the menu category
+          example: "Daily hot lunch offerings"
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuItem'
+          minItems: 1
+        availability:
+          $ref: '#/components/schemas/Availability'
+        lastUpdated:
+          type: string
+          format: date-time
+          description: When this menu data was last scraped
+        isSelected:
+          type: boolean
+          description: Whether this menu is currently randomly selected
+
+    MenuItem:
+      type: object
+      required:
+        - id
+        - name
+        - price
+        - dietary
+        - allergens
+        - availability
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the menu item
+          example: "chicken-curry"
+        name:
+          type: string
+          description: Display name of the food item
+          example: "Chicken Curry"
+        description:
+          type: string
+          description: Detailed description of the dish
+          example: "Spicy chicken curry with rice"
+        price:
+          type: string
+          description: Price as displayed on source website
+          example: "€8.90"
+        dietary:
+          type: array
+          items:
+            type: string
+          description: Dietary categories
+          example: ["vegetarian", "gluten-free"]
+        allergens:
+          type: array
+          items:
+            type: string
+          description: Allergen information
+          example: ["contains dairy", "contains gluten"]
+        availability:
+          type: string
+          description: Additional availability notes
+          example: ""
+
+    Availability:
+      type: object
+      required:
+        - startTime
+        - endTime
+        - days
+      properties:
+        startTime:
+          type: string
+          pattern: '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$'
+          description: Start time in HH:MM format
+          example: "11:00"
+        endTime:
+          type: string
+          pattern: '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$'
+          description: End time in HH:MM format
+          example: "14:00"
+        days:
+          type: array
+          items:
+            type: string
+            enum: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+          description: Days of week when available
+          example: ["monday", "tuesday", "wednesday", "thursday", "friday"]
+
+    ScrapingResult:
+      type: object
+      required:
+        - timestamp
+        - success
+        - menusFound
+        - source
+        - duration
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: When the scraping was performed
+        success:
+          type: boolean
+          description: Whether scraping was successful
+        menusFound:
+          type: integer
+          minimum: 0
+          description: Number of menus successfully parsed
+        source:
+          type: string
+          format: uri
+          description: Source URL that was scraped
+          example: "https://unisafka.fi/tty/"
+        error:
+          type: string
+          nullable: true
+          description: Error message if scraping failed
+        duration:
+          type: integer
+          minimum: 0
+          description: How long scraping took in milliseconds
+
+    MenusResponse:
+      type: object
+      required:
+        - menus
+        - lastUpdated
+        - source
+        - scrapingResult
+      properties:
+        menus:
+          type: array
+          items:
+            $ref: '#/components/schemas/Menu'
+        lastUpdated:
+          type: string
+          format: date-time
+          description: When the data was last updated
+        source:
+          type: string
+          format: uri
+          description: Source URL of the menu data
+        scrapingResult:
+          $ref: '#/components/schemas/ScrapingResult'
+
+    RandomMenuResponse:
+      type: object
+      required:
+        - selectedMenu
+        - totalMenusAvailable
+        - selectionTimestamp
+      properties:
+        selectedMenu:
+          $ref: '#/components/schemas/Menu'
+        totalMenusAvailable:
+          type: integer
+          minimum: 1
+          description: Total number of menus available for selection
+        selectionTimestamp:
+          type: string
+          format: date-time
+          description: When the selection was made
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - code
+        - timestamp
+      properties:
+        error:
+          type: string
+          description: Human-readable error message
+        code:
+          type: string
+          description: Machine-readable error code
+          enum:
+            - "SCRAPING_ERROR"
+            - "SOURCE_UNAVAILABLE"
+            - "NO_MENUS_AVAILABLE"
+            - "INTERNAL_ERROR"
+            - "RATE_LIMITED"
+        retry:
+          type: boolean
+          description: Whether the request can be retried
+          default: true
+        timestamp:
+          type: string
+          format: date-time
+          description: When the error occurred
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+        - version
+      properties:
+        status:
+          type: string
+          enum: ["healthy", "degraded", "unhealthy"]
+          description: Overall service health status
+        timestamp:
+          type: string
+          format: date-time
+          description: When the health check was performed
+        lastSuccessfulScrape:
+          type: string
+          format: date-time
+          description: When the last successful scrape occurred
+        version:
+          type: string
+          description: Application version
+          example: "1.0.0"
+
+tags:
+  - name: Menus
+    description: Operations related to menu data
+  - name: System
+    description: System health and monitoring

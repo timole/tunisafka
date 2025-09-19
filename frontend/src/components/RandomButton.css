@@ -1,0 +1,224 @@
+/* RandomButton Styles */
+
+.random-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.random-button {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 200px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  border: 2px solid transparent;
+}
+
+.random-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+}
+
+.random-button:focus:not(:disabled) {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+.random-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.random-button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 4px rgba(108, 117, 125, 0.2);
+}
+
+.random-button.loading {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.random-button.disabled {
+  background: #dc3545;
+}
+
+.button-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.button-spinner {
+  display: flex;
+  align-items: center;
+}
+
+.button-text {
+  white-space: nowrap;
+}
+
+.no-menus-help-text {
+  color: #666;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Loading State */
+.random-button.loading .button-text {
+  margin-left: 8px;
+}
+
+/* Size Variants */
+.random-button.large {
+  padding: 20px 40px;
+  font-size: 1.2rem;
+  min-width: 250px;
+}
+
+.random-button.small {
+  padding: 12px 24px;
+  font-size: 1rem;
+  min-width: 150px;
+}
+
+/* Color Variants */
+.random-button.success {
+  background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.random-button.success:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1e7e34 0%, #155724 100%);
+  box-shadow: 0 6px 16px rgba(40, 167, 69, 0.4);
+}
+
+.random-button.warning {
+  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+  color: #212529;
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+}
+
+.random-button.warning:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e0a800 0%, #d39e00 100%);
+  box-shadow: 0 6px 16px rgba(255, 193, 7, 0.4);
+}
+
+/* Accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .random-button {
+    border: 2px solid;
+  }
+
+  .random-button:focus {
+    outline: 3px solid;
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .random-button {
+    transition: none;
+  }
+
+  .random-button:hover:not(:disabled) {
+    transform: none;
+  }
+
+  .random-button:active:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .random-button {
+    padding: 14px 28px;
+    font-size: 1rem;
+    min-width: 180px;
+  }
+
+  .random-button.large {
+    padding: 16px 32px;
+    font-size: 1.1rem;
+    min-width: 200px;
+  }
+
+  .random-button.small {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    min-width: 130px;
+  }
+}
+
+@media (max-width: 480px) {
+  .random-button {
+    padding: 12px 24px;
+    font-size: 0.95rem;
+    min-width: 160px;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .button-content {
+    gap: 8px;
+  }
+
+  .no-menus-help-text {
+    font-size: 0.85rem;
+    padding: 0 16px;
+  }
+}
+
+/* Animation for successful selection */
+@keyframes success-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  }
+}
+
+.random-button.success-animation {
+  animation: success-pulse 0.6s ease-in-out;
+}
