@@ -41,11 +41,14 @@ jobs:
       run: |
         cd backend
         npm ci
+      env:
+        PUPPETEER_SKIP_DOWNLOAD: true
 
     - name: Run backend tests
       run: |
         cd backend
-        npm test
+        node -v
+        npm test -- --runInBand --detectOpenHandles --verbose
       env:
         NODE_OPTIONS: --experimental-global-webcrypto
 
