@@ -19,6 +19,7 @@ const rateLimiter = require('./middleware/rateLimiter');
 // Import routes
 const healthRoutes = require('./routes/health');
 const menuRoutes = require('./routes/menus');
+const cacheRoutes = require('./routes/cache');
 
 class TunisafkaApp {
   constructor() {
@@ -130,6 +131,7 @@ class TunisafkaApp {
 
     // API routes
     this.app.use('/api/menus', menuRoutes);
+    this.app.use('/api/cache', cacheRoutes);
 
     // Root endpoint
     this.app.get('/', (req, res) => {
@@ -141,6 +143,7 @@ class TunisafkaApp {
           health: '/api/health',
           menus: '/api/menus',
           randomMenu: '/api/menus/random',
+          cache: '/api/cache',
         },
         documentation: '/api/docs',
         timestamp: new Date().toISOString(),
@@ -214,6 +217,7 @@ class TunisafkaApp {
           '/api/health',
           '/api/menus',
           '/api/menus/random',
+          '/api/cache',
           '/api/docs',
         ],
       });

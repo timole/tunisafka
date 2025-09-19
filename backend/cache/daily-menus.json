@@ -1,0 +1,462 @@
+{
+  "date": "2025-09-19",
+  "timestamp": "2025-09-19T11:39:10.506Z",
+  "timezone": "Europe/Helsinki",
+  "menuData": [
+    {
+      "id": "hertsi",
+      "title": "Hertsi",
+      "description": "FROM THE FIELD-VEGAN - Chili-roasted butternut squash, organic beans, and rice, hummus made from organic chickpeas, and roasted peanuts",
+      "items": [
+        {
+          "id": "from-the-field-vegan",
+          "name": "FROM THE FIELD-VEGAN",
+          "description": "Chili-roasted butternut squash, organic beans, and rice, hummus made from organic chickpeas, and roasted peanuts",
+          "price": "€3.50",
+          "dietary": [
+            "g",
+            "m"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "from-our-favorites-1",
+          "name": "From our favorites 1",
+          "description": "Pea Soup and Pancakes for dessert",
+          "price": "€3.50",
+          "dietary": [
+            "1kpl/pcann.",
+            "l"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "from-our-favorites-2",
+          "name": "From our favorites 2",
+          "description": "Chicken Mac&Cheese and warm vegetables",
+          "price": "€3.50",
+          "dietary": [
+            "l"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "from-the-soup-bowl",
+          "name": "FROM THE SOUP BOWL",
+          "description": "Spicy tomato Soup",
+          "price": "€3.50",
+          "dietary": [
+            "g",
+            "m"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "from-our-bakery",
+          "name": "From our bakery",
+          "description": "Baquette lunch from Café Bitti",
+          "price": "€3.50",
+          "dietary": [
+            "m"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "from-the-garden",
+          "name": "From the garden",
+          "description": "Chicken&Taco salad from Café Bitti",
+          "price": "€3.50",
+          "dietary": [
+            "vl"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "from-the-sweet",
+          "name": "FROM THE SWEET",
+          "description": "Blueberry Quark",
+          "price": "€3.50",
+          "dietary": [
+            "g",
+            "l"
+          ],
+          "allergens": [],
+          "availability": ""
+        }
+      ],
+      "availability": {
+        "startTime": "10:30",
+        "endTime": "14:00",
+        "days": [
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday"
+        ]
+      },
+      "lastUpdated": "2025-09-19T11:39:10.505Z",
+      "isSelected": false
+    },
+    {
+      "id": "newton",
+      "title": "Newton",
+      "description": "Traditional Finnish lunch with pea soup, pancakes, and hearty main courses",
+      "items": [
+        {
+          "id": "lunch",
+          "name": "LUNCH",
+          "description": "Pea soup with pork meat",
+          "price": "€3.50",
+          "dietary": [
+            "*",
+            "g",
+            "m",
+            "mu"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "onion",
+          "name": "Onion",
+          "description": "Fresh onion side",
+          "price": "€3.50",
+          "dietary": [
+            "*",
+            "g",
+            "kasv",
+            "vegetarian"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "pancake",
+          "name": "Pancake",
+          "description": "Traditional Finnish pancake",
+          "price": "€2.50",
+          "dietary": [],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "strawberry-jam",
+          "name": "Strawberry Jam",
+          "description": "Sweet strawberry jam for pancakes",
+          "price": "€3.50",
+          "dietary": [
+            "g",
+            "kasv",
+            "m",
+            "mu",
+            "vegetarian"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "lunch",
+          "name": "LUNCH",
+          "description": "Chicken Drumsticks",
+          "price": "€3.50",
+          "dietary": [
+            "g",
+            "m",
+            "mu"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "chili-mayo",
+          "name": "Chili mayo",
+          "description": "Spicy mayonnaise sauce",
+          "price": "€3.50",
+          "dietary": [
+            "g",
+            "m"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "boiled-potatoes",
+          "name": "Boiled Potatoes",
+          "description": "Traditional boiled potatoes",
+          "price": "€3.50",
+          "dietary": [
+            "*",
+            "g",
+            "kasv",
+            "m",
+            "mu",
+            "vegetarian"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "whole-grain-rice",
+          "name": "Whole Grain Rice",
+          "description": "Healthy whole grain rice",
+          "price": "€3.50",
+          "dietary": [
+            "*",
+            "g",
+            "kasv",
+            "m",
+            "mu",
+            "vegetarian"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "warm-vegetable-mix",
+          "name": "Warm Vegetable Mix",
+          "description": "Seasonal warm vegetables",
+          "price": "€3.50",
+          "dietary": [
+            "*",
+            "g",
+            "kasv",
+            "m",
+            "mu",
+            "vegetarian"
+          ],
+          "allergens": [],
+          "availability": ""
+        }
+      ],
+      "availability": {
+        "startTime": "11:00",
+        "endTime": "14:00",
+        "days": [
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday"
+        ]
+      },
+      "lastUpdated": "2025-09-19T11:39:10.505Z",
+      "isSelected": false
+    },
+    {
+      "id": "caf-konehuone",
+      "title": "Café Konehuone",
+      "description": "Fusion burgers and street food favorites",
+      "items": [
+        {
+          "id": "fusion-burger",
+          "name": "FUSION BURGER",
+          "description": "Devil's burger",
+          "price": "€3.50",
+          "dietary": [
+            "mu"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "french-fries",
+          "name": "French Fries",
+          "description": "Crispy golden french fries",
+          "price": "€3.50",
+          "dietary": [
+            "g",
+            "kasv",
+            "m",
+            "mu",
+            "vegetarian"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "fusion-vege-burger",
+          "name": "FUSION VEGE BURGER",
+          "description": "Tofu Burger",
+          "price": "€3.50",
+          "dietary": [
+            "kasv",
+            "m"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "street-food",
+          "name": "STREET FOOD",
+          "description": "Minced Meat Corn Stuffing Tortillas",
+          "price": "€3.50",
+          "dietary": [
+            "*",
+            "m",
+            "mu"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "street-food-vege",
+          "name": "STREET FOOD VEGE",
+          "description": "Tortillas with Vegetable Bean Filling",
+          "price": "€3.50",
+          "dietary": [
+            "*",
+            "kasv",
+            "m",
+            "mu",
+            "sis.luomua",
+            "vegetarian"
+          ],
+          "allergens": [],
+          "availability": ""
+        }
+      ],
+      "availability": {
+        "startTime": "10:30",
+        "endTime": "15:00",
+        "days": [
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday"
+        ]
+      },
+      "lastUpdated": "2025-09-19T11:39:10.505Z",
+      "isSelected": false
+    },
+    {
+      "id": "reaktori",
+      "title": "Reaktori",
+      "description": "Buffet-style dining with vegan options and fresh daily specials",
+      "items": [
+        {
+          "id": "vegan-lunch-buffet-lines-1-4",
+          "name": "Vegan lunch (Buffet lines 1-4)",
+          "description": "Aubergine and tomato stew with gremolata",
+          "price": "€3.50",
+          "dietary": [
+            "a",
+            "ilm",
+            "kasv",
+            "l",
+            "m",
+            "vegetarian",
+            "vs"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "roasted-potatoes",
+          "name": "Roasted potatoes",
+          "description": "Golden roasted potatoes",
+          "price": "€3.50",
+          "dietary": [
+            "g",
+            "ilm",
+            "kasv",
+            "l",
+            "m",
+            "vegetarian"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "lunch-buffet-lines-1-4",
+          "name": "Lunch (Buffet lines 1-4)",
+          "description": "meatballs in black pepper sauce *, a, l 6 pc / portion 0,50 € / extra pc",
+          "price": "0,50 € / extra pc",
+          "dietary": [
+            "*",
+            "a",
+            "l"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "lunch-buffet-lines-3-4",
+          "name": "Lunch (Buffet lines 3-4)",
+          "description": "portugese-style sausage soup a, l, m, vs, g",
+          "price": "€3.50",
+          "dietary": [
+            "a",
+            "l",
+            "m",
+            "vs",
+            "g"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "vegetable-soup-buffet-lines-3-4",
+          "name": "Vegetable soup (Buffet lines 3-4)",
+          "description": "creamy pureed black salsify soup *, a, ilm, l, vs, g",
+          "price": "€3.50",
+          "dietary": [
+            "*",
+            "a",
+            "ilm",
+            "l",
+            "vs",
+            "g",
+            "kasv"
+          ],
+          "allergens": [],
+          "availability": ""
+        },
+        {
+          "id": "pop-up-grill-lunch-10-30-13-30",
+          "name": "Pop Up Grill lunch 10:30 - 13:30",
+          "description": "Mildly smoked rainbow trout",
+          "price": "€3.50",
+          "dietary": [
+            "a",
+            "g",
+            "ilm",
+            "l",
+            "m"
+          ],
+          "allergens": [],
+          "availability": ""
+        }
+      ],
+      "availability": {
+        "startTime": "10:30",
+        "endTime": "13:30",
+        "days": [
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday"
+        ]
+      },
+      "lastUpdated": "2025-09-19T11:39:10.505Z",
+      "isSelected": false
+    }
+  ],
+  "scrapingResult": {
+    "timestamp": "2025-09-19T11:39:10.506Z",
+    "success": true,
+    "menusFound": 4,
+    "source": "https://unisafka.fi/tty/",
+    "error": null,
+    "duration": 1
+  },
+  "version": "1.0.0"
+}
