@@ -48,9 +48,10 @@ jobs:
       run: |
         cd backend
         node -v
-        npm test -- --runInBand --detectOpenHandles --verbose
+        npm test -- --runInBand --verbose --maxWorkers=1
       env:
         NODE_OPTIONS: --experimental-global-webcrypto
+        CI: true
 
     - name: Run backend linting
       run: |
