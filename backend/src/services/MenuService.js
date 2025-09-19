@@ -4,29 +4,59 @@
  */
 
 const ScrapingService = require('./ScrapingService');
+const CacheService = require('./CacheService');
 const Menu = require('../models/Menu');
 const MenuItem = require('../models/MenuItem');
 
 class MenuService {
   constructor() {
     this.scrapingService = new ScrapingService();
+    this.cacheService = new CacheService();
     this.lastScrapingResult = null;
-    this.cachedMenus = [];
     this.lastUpdate = null;
+    this._isInitialized = false;
   }
 
   /**
-   * Gets all available menus with fresh data
+   * Initializes the service (must be called before use)
+   */
+  async initialize() {
+    if (!this._isInitialized) {
+      await this.cacheService.initialize();
+      this._isInitialized = true;
+    }
+  }
+
+  /**
+   * Gets all available menus with caching support
    */
   async getAllMenus() {
+    await this.initialize();
+    
     try {
+      // Try to get cached data first
+      const cachedData = await this.cacheService.getCachedMenus();
+      if (cachedData) {
+        this.lastUpdate = cachedData.lastUpdated;
+        this.lastScrapingResult = cachedData.scrapingResult;
+        
+        return {
+          ...cachedData,
+          source: this.scrapingService.sourceUrl + ' (cached)',
+        };
+      }
+
+      // No valid cache, scrape fresh data
+      console.log('🕸️  No valid cache found, scraping fresh data...');
       const { menus, result } = await this.scrapingService.scrapeMenus();
       
       // Process and validate menus
       const processedMenus = this.processMenus(menus);
       
-      // Update cache and metadata
-      this.cachedMenus = processedMenus;
+      // Cache the processed data
+      await this.cacheService.cacheMenus(processedMenus, result);
+      
+      // Update metadata
       this.lastScrapingResult = result;
       this.lastUpdate = new Date().toISOString();
       
@@ -38,6 +68,28 @@ class MenuService {
       };
     } catch (error) {
       console.error('Error in MenuService.getAllMenus:', error);
+      
+      // Try to serve stale cache as fallback
+      try {
+        console.log('🔄 Attempting to serve stale cache as fallback...');
+        // For fallback, we'll try to load any existing cache regardless of validity
+        const cacheEntry = await this.cacheService.loadCacheForFallback();
+        if (cacheEntry && cacheEntry.menuData) {
+          console.log('✅ Serving stale cache data as fallback');
+          return {
+            menus: cacheEntry.menuData,
+            lastUpdated: cacheEntry.timestamp,
+            source: this.scrapingService.sourceUrl + ' (stale cache)',
+            scrapingResult: cacheEntry.scrapingResult,
+            warning: 'Serving cached data due to scraping failure',
+            scrapingError: error.message,
+            cacheDate: cacheEntry.date,
+          };
+        }
+      } catch (fallbackError) {
+        console.error('❌ Fallback cache also failed:', fallbackError.message);
+      }
+      
       throw error;
     }
   }
@@ -195,41 +247,25 @@ class MenuService {
   }
 
   /**
-   * Gets cached menus if available and fresh
+   * Gets cache statistics
    */
-  getCachedMenus() {
-    if (!this.lastUpdate || !this.cachedMenus.length) {
-      return null;
-    }
-
-    // For real-time requirement, always return fresh data
-    // But we can return cached for very recent requests (< 1 second)
-    const cacheAge = Date.now() - new Date(this.lastUpdate).getTime();
-    if (cacheAge < 1000) { // Less than 1 second old
-      return {
-        menus: this.cachedMenus,
-        lastUpdated: this.lastUpdate,
-        source: this.scrapingService.sourceUrl,
-        scrapingResult: this.lastScrapingResult,
-      };
-    }
-
-    return null;
+  async getCacheStats() {
+    await this.initialize();
+    return await this.cacheService.getCacheStats();
   }
 
   /**
-   * Gets menus with optional caching
+   * Clears the cache
    */
-  async getMenus(useCache = false) {
-    // Check cache first if allowed
-    if (useCache) {
-      const cached = this.getCachedMenus();
-      if (cached) {
-        return cached;
-      }
-    }
+  async clearCache() {
+    await this.initialize();
+    return await this.cacheService.clearCache();
+  }
 
-    // Get fresh data
+  /**
+   * Gets menus (always uses caching now)
+   */
+  async getMenus() {
     return await this.getAllMenus();
   }
 
@@ -386,7 +422,8 @@ class MenuService {
    * Forces a fresh scrape (clears cache)
    */
   async refreshMenus() {
-    this.cachedMenus = [];
+    await this.initialize();
+    await this.cacheService.clearCache();
     this.lastUpdate = null;
     this.lastScrapingResult = null;
     
@@ -408,13 +445,16 @@ class MenuService {
   /**
    * Gets current service status
    */
-  getServiceStatus() {
+  async getServiceStatus() {
+    await this.initialize();
+    const cacheStats = await this.getCacheStats();
+    
     return {
       isHealthy: this.lastScrapingResult ? this.lastScrapingResult.success : null,
       lastUpdate: this.lastUpdate,
       lastScrapingResult: this.lastScrapingResult,
-      cachedMenuCount: this.cachedMenus.length,
       scrapingConfig: this.scrapingService.getConfig(),
+      cacheStats: cacheStats,
     };
   }
 }

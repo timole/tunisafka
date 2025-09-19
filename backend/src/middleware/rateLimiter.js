@@ -10,7 +10,14 @@ class SimpleRateLimiter {
     this.maxRequests = 200; // 200 requests per minute per IP for testing
     
     // Cleanup old entries every 5 minutes
-    setInterval(() => this.cleanup(), 5 * 60 * 1000);
+    this.cleanupInterval = setInterval(() => this.cleanup(), 5 * 60 * 1000);
+  }
+
+  destroy() {
+    if (this.cleanupInterval) {
+      clearInterval(this.cleanupInterval);
+      this.cleanupInterval = null;
+    }
   }
 
   isAllowed(ip) {
@@ -83,6 +90,9 @@ class SimpleRateLimiter {
 
 // Create global rate limiter instance
 const rateLimiter = new SimpleRateLimiter();
+
+// Store reference for cleanup
+global.rateLimiterInstance = rateLimiter;
 
 // Middleware function
 const rateLimiterMiddleware = (req, res, next) => {

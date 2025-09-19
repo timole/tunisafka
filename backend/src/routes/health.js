@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const menuService = req.menuService;
-    const serviceStatus = menuService.getServiceStatus();
+    const serviceStatus = await menuService.getServiceStatus();
     
     // Determine health status
     let status = 'healthy';
@@ -60,7 +60,7 @@ router.get('/', async (req, res) => {
     // Add service details in development
     if (process.env.NODE_ENV !== 'production') {
       healthResponse.serviceDetails = {
-        cachedMenuCount: serviceStatus.cachedMenuCount,
+        cacheStats: serviceStatus.cacheStats,
         lastScrapingSuccess: serviceStatus.lastScrapingResult ? serviceStatus.lastScrapingResult.success : null,
         scrapingConfig: serviceStatus.scrapingConfig,
       };
@@ -89,7 +89,7 @@ router.get('/detailed', async (req, res) => {
     const menuService = req.menuService;
     const randomService = req.randomSelectionService;
     
-    const serviceStatus = menuService.getServiceStatus();
+    const serviceStatus = await menuService.getServiceStatus();
     const randomConfig = randomService.getConfig();
     const randomStats = randomService.getSelectionStatistics();
     
