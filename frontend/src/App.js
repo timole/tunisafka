@@ -19,6 +19,8 @@ function App() {
   const [lastUpdated, setLastUpdated] = useState(null);
   const [randomSelectionLoading, setRandomSelectionLoading] = useState(false);
   const [randomSelectionError, setRandomSelectionError] = useState(null);
+  const [randomMealLoading, setRandomMealLoading] = useState(false);
+  const [randomMealError, setRandomMealError] = useState(null);
 
   /**
    * Loads all menus from the API
@@ -125,6 +127,41 @@ function App() {
   }, []);
 
   /**
+   * Handles random meal (single item) selection
+   */
+  const handleRandomMealSelection = useCallback(async () => {
+    try {
+      setRandomMealLoading(true);
+      setRandomMealError(null);
+
+      console.log('🥘 Selecting random meal...');
+      const data = await apiService.getRandomMeal();
+
+      // Highlight the parent menu of the selected meal
+      setMenus((prevMenus) =>
+        prevMenus.map((menu) => ({
+          ...menu,
+          isSelected: menu.id === data.selectedMenuId,
+        }))
+      );
+
+      console.log(
+        `✅ Selected random meal from menu ${data.selectedMenuTitle}: ${data.selectedMeal.name}`
+      );
+    } catch (err) {
+      console.error('❌ Failed to select random meal:', err);
+      setRandomMealError({
+        message: err.message || 'Failed to select random meal',
+        code: err.code || 'UNKNOWN_ERROR',
+        canRetry: err.retry !== false,
+        type: err.code?.includes('NO_MENUS') ? 'no-data' : 'error',
+      });
+    } finally {
+      setRandomMealLoading(false);
+    }
+  }, []);
+
+  /**
    * Handles retry for main menu loading
    */
   const handleRetry = useCallback(() => {
@@ -225,7 +262,7 @@ function App() {
         {/* Random Selection Section */}
         <section className='random-selection-section'>
           <h2>Feeling Adventurous?</h2>
-          <p>Let us pick a random menu for you!</p>
+          <p>Let us pick a random menu or a single meal for you!</p>
 
           <RandomButton
             onClick={handleRandomSelection}
@@ -233,6 +270,18 @@ function App() {
             isLoading={randomSelectionLoading}
             noMenusAvailable={!loading && menus.length === 0}
           />
+
+          <div style={{ marginTop: '8px' }}>
+            <button
+              className='clear-selection-button'
+              onClick={handleRandomMealSelection}
+              disabled={loading || menus.length === 0 || randomMealLoading}
+              aria-label='Select a random meal inside a menu'
+              title='Select Random Meal'
+            >
+              {randomMealLoading ? 'Selecting Meal...' : 'Select Random Meal'}
+            </button>
+          </div>
 
           {randomSelectionError && (
             <ErrorMessage
@@ -243,6 +292,19 @@ function App() {
               onRetry={handleRandomRetry}
               dismissible={true}
               onDismiss={dismissRandomError}
+              showSuggestions={true}
+            />
+          )}
+
+          {randomMealError && (
+            <ErrorMessage
+              message={randomMealError.message}
+              type={randomMealError.type}
+              severity='error'
+              canRetry={randomMealError.canRetry}
+              onRetry={handleRandomMealSelection}
+              dismissible={true}
+              onDismiss={() => setRandomMealError(null)}
               showSuggestions={true}
             />
           )}

@@ -146,6 +146,18 @@ class ApiService {
   }
 
   /**
+   * Gets a randomly selected single meal (menu item)
+   */
+  async getRandomMeal() {
+    try {
+      const response = await this.client.get('/menus/random-meal');
+      return response.data;
+    } catch (error) {
+      throw this.transformError(error);
+    }
+  }
+
+  /**
    * Gets API health status
    */
   async getHealthStatus() {

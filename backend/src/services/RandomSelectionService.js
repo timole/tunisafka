@@ -155,6 +155,53 @@ class RandomSelectionService {
   }
 
   /**
+   * Selects a random single meal (menu item) from all provided menus
+   */
+  selectRandomMeal(menus) {
+    if (!Array.isArray(menus) || menus.length === 0) {
+      throw new Error('No menus available for random meal selection');
+    }
+
+    const validMenus = menus.filter(menu => menu instanceof Menu);
+    if (validMenus.length === 0) {
+      throw new Error('No valid menus available for random meal selection');
+    }
+
+    // Flatten all items with references to their parent menu
+    const itemsWithMenu = validMenus.flatMap(menu =>
+      (Array.isArray(menu.items) ? menu.items : []).map(item => ({
+        menuId: menu.id,
+        menuTitle: menu.title,
+        item,
+      }))
+    );
+
+    if (itemsWithMenu.length === 0) {
+      throw new Error('No meals available for random selection');
+    }
+
+    const randomIndex = this.generateRandomIndex(itemsWithMenu.length);
+    const selected = itemsWithMenu[randomIndex];
+
+    // Track selection history by menu id to keep parity with menu selection stats
+    this.updateSelectionHistory(selected.menuId);
+    this.lastSelection = {
+      menuId: selected.menuId,
+      timestamp: new Date().toISOString(),
+      totalAvailable: validMenus.length,
+      selectionType: 'meal',
+    };
+
+    return {
+      selectedMeal: selected.item,
+      selectedMenuId: selected.menuId,
+      selectedMenuTitle: selected.menuTitle,
+      totalMealsAvailable: itemsWithMenu.length,
+      selectionTimestamp: this.lastSelection.timestamp,
+    };
+  }
+
+  /**
    * Generates a cryptographically secure random index
    */
   generateRandomIndex(max) {

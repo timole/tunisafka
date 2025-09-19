@@ -64,6 +64,36 @@ router.get('/random', async (req, res, next) => {
 });
 
 /**
+ * GET /api/menus/random-meal
+ * Gets a randomly selected single meal (menu item)
+ */
+router.get('/random-meal', async (req, res, next) => {
+  try {
+    const menuService = req.menuService;
+    const randomSelectionService = req.randomSelectionService;
+
+    // Get all available menus (cache-enabled)
+    const { menus } = await menuService.getAllMenus();
+
+    if (menus.length === 0) {
+      return res.status(404).json({
+        error: 'No menus available for random meal selection',
+        code: 'NO_MENUS_AVAILABLE',
+        retry: true,
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    const result = randomSelectionService.selectRandomMeal(menus);
+
+    res.json(result);
+  } catch (error) {
+    console.error('❌ Error selecting random meal:', error.message);
+    next(error);
+  }
+});
+
+/**
  * GET /api/menus/stats
  * Gets menu statistics and metadata
  */
