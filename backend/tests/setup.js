@@ -44,4 +44,3 @@ afterAll(() => {
     global.rateLimiterInstance = null;
   }
 });
-});

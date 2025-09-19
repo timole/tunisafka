@@ -37,12 +37,18 @@ class MenuService {
       // Try to get cached data first
       const cachedData = await this.cacheService.getCachedMenus();
       if (cachedData) {
-        this.lastUpdate = cachedData.lastUpdated;
+        // Normalize cached menus back into Menu instances
+        const processedMenus = this.processMenus(cachedData.menus);
+        
+        this.lastUpdate = new Date().toISOString();
         this.lastScrapingResult = cachedData.scrapingResult;
         
         return {
-          ...cachedData,
-          source: this.scrapingService.sourceUrl + ' (cached)',
+          menus: processedMenus,
+          lastUpdated: this.lastUpdate,
+          source: this.scrapingService.sourceUrl,
+          scrapingResult: cachedData.scrapingResult,
+          cacheHit: true,
         };
       }
 
@@ -65,6 +71,7 @@ class MenuService {
         lastUpdated: this.lastUpdate,
         source: this.scrapingService.sourceUrl,
         scrapingResult: result,
+        cacheHit: false,
       };
     } catch (error) {
       console.error('Error in MenuService.getAllMenus:', error);
