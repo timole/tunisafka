@@ -197,7 +197,7 @@ describe('MenuList Component', () => {
 
       // Each menu should be a list item - filter to get only the container divs
       const allElements = screen.getAllByTestId(/^menu-\w+-menu$/);
-      const menuContainers = allElements.filter(el => el.tagName === 'DIV');
+      const menuContainers = allElements.filter((el) => el.tagName === 'DIV');
       expect(menuContainers).toHaveLength(mockMenus.length);
     });
 

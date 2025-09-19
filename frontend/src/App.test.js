@@ -11,6 +11,8 @@ test('renders tunisafka app', () => {
 test('renders random button', () => {
   render(<App />);
   // Check for the random selection button using the actual button text
-  const randomButton = screen.getByRole('button', { name: /select.*random.*menu/i });
+  const randomButton = screen.getByRole('button', {
+    name: /select.*random.*menu/i,
+  });
   expect(randomButton).toBeInTheDocument();
 });

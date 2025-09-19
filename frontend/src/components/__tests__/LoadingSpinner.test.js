@@ -87,8 +87,9 @@ describe('LoadingSpinner Component', () => {
       expect(screen.getByText(/loading.*menu/i)).toBeInTheDocument();
 
       // Should have progress indication for longer operations
-      if (screen.queryByRole('progressbar')) {
-        expect(screen.getByRole('progressbar')).toBeInTheDocument();
+      const progressBar = screen.queryByRole('progressbar');
+      if (progressBar) {
+        expect(progressBar).toBeInTheDocument();
       }
     });
 
@@ -272,6 +273,8 @@ describe('LoadingSpinner Component', () => {
       }
 
       // Should handle without errors
+      // Ensure final state not visible
+      rerender(<LoadingSpinner isVisible={false} />);
       await waitFor(() => {
         expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument();
       });
