@@ -36,3 +36,17 @@ global.testHelpers = {
   // Add common test utilities here
   sleep: (ms) => new Promise(resolve => setTimeout(resolve, ms)),
 };
+
+// Cleanup rate limiter after all tests
+afterAll(async () => {
+  // Clean up any global rate limiter instances
+  if (global.rateLimiterInstance) {
+    global.rateLimiterInstance.destroy();
+    global.rateLimiterInstance = null;
+  }
+  
+  // Force cleanup of any remaining timers
+  if (typeof global.gc === 'function') {
+    global.gc();
+  }
+});
