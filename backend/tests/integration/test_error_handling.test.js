@@ -162,21 +162,15 @@ describe('Integration Test: Error Handling Scenarios', () => {
 
   describe('Network and Connection Error Handling', () => {
     test('should handle connection timeouts appropriately', async () => {
-      // Test that requests don't hang indefinitely
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Request timeout')), 10000);
-      });
-      
-      const requestPromise = request(app).get('/api/menus');
+      // Test that requests don't hang indefinitely with an explicit abort
+      const controller = new AbortController();
+      const abortTimeout = setTimeout(() => controller.abort(), 5000);
       
       try {
-        const response = await Promise.race([requestPromise, timeoutPromise]);
+        const response = await request(app).get('/api/menus').timeout({ deadline: 9000 });
         expect(response.status).toBeDefined();
-      } catch (error) {
-        if (error.message === 'Request timeout') {
-          fail('Request took longer than 10 seconds - potential hanging');
-        }
-        // Other errors are acceptable for this test
+      } finally {
+        clearTimeout(abortTimeout);
       }
     });
 

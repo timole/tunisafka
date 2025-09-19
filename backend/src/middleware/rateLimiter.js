@@ -10,7 +10,7 @@ class SimpleRateLimiter {
     this.maxRequests = 200; // 200 requests per minute per IP for testing
     this.cleanupInterval = null;
     
-    // Only start cleanup interval in non-test environments or when explicitly enabled
+    // Only start cleanup interval when not running tests
     if (process.env.NODE_ENV !== 'test') {
       this.startCleanup();
     }
@@ -18,10 +18,10 @@ class SimpleRateLimiter {
 
   startCleanup() {
     if (!this.cleanupInterval) {
-      // Cleanup old entries every 5 minutes
       this.cleanupInterval = setInterval(() => this.cleanup(), 5 * 60 * 1000);
-      // In Node.js, unref() allows the process to exit even with this timer active
-      this.cleanupInterval.unref();
+      if (typeof this.cleanupInterval.unref === 'function') {
+        this.cleanupInterval.unref();
+      }
     }
   }
 
@@ -102,6 +102,8 @@ class SimpleRateLimiter {
 
 // Create global rate limiter instance
 const rateLimiter = new SimpleRateLimiter();
+// Expose for test cleanup
+global.rateLimiterInstance = rateLimiter;
 
 // Store reference for cleanup
 global.rateLimiterInstance = rateLimiter;
