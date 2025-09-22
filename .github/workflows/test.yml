@@ -48,7 +48,7 @@ jobs:
       run: |
         cd backend
         node -v
-        npm test -- --runInBand --verbose --maxWorkers=1
+        npm test -- --runInBand --verbose
       env:
         NODE_OPTIONS: --experimental-global-webcrypto
         CI: true
